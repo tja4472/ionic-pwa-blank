@@ -39,14 +39,6 @@ export class MyApp {
             };
           });
           toast.present();
-          /*        
-                  const toast = this.toastCtrl.create({
-                    message: 'New Update available! Reload the webapp to see the latest juicy changes.',
-                    position: 'bottom',
-                    showCloseButton: true,
-                  });
-                  toast.present();
-           */
         }
       });
   }
