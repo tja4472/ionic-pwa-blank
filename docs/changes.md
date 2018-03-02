@@ -117,7 +117,65 @@ export class MyApp {
 ## src folder
 - remove src/service-worker.js
 
+
+## src/index.html
+- remove cordova.js
+```html
+  <script>
+    // make the whole serviceworker process into a promise so later on we can
+    // listen to it and in case new content is available a toast will be shown
+    window.isUpdateAvailable = new Promise(function (resolve, reject) {
+      // lazy way of disabling service workers while developing
+      if ('serviceWorker' in navigator && ['localhost', '127'].indexOf(location.hostname) === -1) {
+        // register service worker file
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => {
+            console.log('service worker installed')
+            reg.onupdatefound = () => {
+              const installingWorker = reg.installing;
+              installingWorker.onstatechange = () => {
+                switch (installingWorker.state) {
+                  case 'installed':
+                    if (navigator.serviceWorker.controller) {
+                      // new update available
+                      console.log('service worker: new update available')
+                      resolve(true);
+                    } else {
+                      // no update available
+                      resolve(false);
+                    }
+                    break;
+                }
+              };
+            };
+          })
+          .catch(err => console.error('[SW ERROR]', err));
+      }
+    });
+  </script>
+```
+
+## src/manifest.json
+```json
+{
+  "name": "PWA Blank",
+  "short_name": "PWA Blank",
+  "start_url": "index.html",
+  "display": "standalone",
+  "icons": [{
+    "src": "assets/img/appicon-192a.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }],
+  "background_color": "#4e8ef7",
+  "theme_color": "#4e8ef7"
+}
+```
+
+# Failed Changes
 ## main.ts
+NOTE: This does not work on Android, onupdatefound is never called.
+
 ```typescript
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -158,23 +216,4 @@ platformBrowserDynamic()
         }
       });    
   });
-```
-## src/index.html
-- remove cordova.js
-
-## src/manifest.json
-```json
-{
-  "name": "PWA Blank",
-  "short_name": "PWA Blank",
-  "start_url": "index.html",
-  "display": "standalone",
-  "icons": [{
-    "src": "assets/img/appicon-192a.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  }],
-  "background_color": "#4e8ef7",
-  "theme_color": "#4e8ef7"
-}
 ```

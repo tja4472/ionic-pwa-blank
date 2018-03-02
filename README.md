@@ -8,3 +8,7 @@
 
 ## Deploy
 - firebase deploy
+
+## Enable remote debug
+- C:\android-sdk\platform-tools\adb devices
+
