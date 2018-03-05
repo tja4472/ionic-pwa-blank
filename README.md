@@ -9,6 +9,12 @@
 ## Deploy
 - firebase deploy
 
+## Update
+- npm install -g firebase-tools
+- npm install -g workbox-cli
+- firebase --version
+- workbox-cli --version
+
 ## Enable remote debug
 - C:\android-sdk\platform-tools\adb devices
 
