@@ -6,5 +6,6 @@ module.exports = {
   'swDest': './www/service-worker.js',
   'globIgnores': [
     '../workbox-cli-config.js'
-  ]
+  ],
+  "maximumFileSizeToCacheInBytes": "5MB",
 };
